@@ -1,0 +1,39 @@
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.product-card {
+  background-color: #fff;
+
+  overflow: hidden;
+  text-align: center;
+
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-title {
+  font-size: 14px;
+  margin: 6px 0;
+  color: black;
+}
+
+.product-price {
+  color: #888;
+  font-size: 12px;
+  margin-bottom: 10px;
+}

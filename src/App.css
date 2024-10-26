@@ -1,0 +1,92 @@
+.App {
+  /* max-width: fit-content; */
+  width: 100%;
+  margin: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.MuiFormControl-root {
+  margin: 8px;
+}
+
+.Scale {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: grey;
+}
+
+.App_contents {
+  /* display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex; */
+  width: 100%;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.nav-button {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #f04d4d;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 80px;
+  height: 40px;
+}
+
+.nav-button.left {
+  left: 10px;
+  position: fixed;
+}
+
+.nav-button.right {
+  right: 10px;
+  position: fixed;
+}
+
+.id {
+  position: fixed;
+  bottom: 0px;
+  right: 10px;
+  color: gray;
+}
