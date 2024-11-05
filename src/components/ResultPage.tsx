@@ -12,8 +12,8 @@ const SplatoonResultBar: React.FC<Props> = (props) => {
   const [rightPercent, setRightPercent] = useState(0);
 
   // 実際の割合
-  const finalLeftPercent = 50; // パープルのバーのパーセンテージ
-  const finalRightPercent = 50; // イエローのバーのパーセンテージ
+  const finalLeftPercent = props.score; // パープルのバーのパーセンテージ
+  const finalRightPercent = 100 - props.score; // イエローのバーのパーセンテージ
 
   // アニメーションを追加
   useEffect(() => {
@@ -59,7 +59,7 @@ const SplatoonResultBar: React.FC<Props> = (props) => {
           {props.selectedItem == 1
             ? "全て人間が書いた"
             : props.selectedItem == 2
-            ? "人間がAIのサポートを受けて書いた"
+            ? "人間がAIの提案を参考にして書いた"
             : props.selectedItem == 3
             ? "AIが書いた文章を人間が修正した"
             : "全てAIが書いた"}
@@ -79,22 +79,34 @@ const SplatoonResultBar: React.FC<Props> = (props) => {
         </p>
         <div className="result-bar">
           <div className="bar left" style={{ width: `${leftPercent}%` }}>
-            <span className="percent-text">{leftPercent}%</span>
+            <span className="percent-text">
+              {parseFloat(leftPercent.toFixed(2))}%
+            </span>
           </div>
           <div className="bar right" style={{ width: `${rightPercent}%` }}>
-            <span className="percent-text">{rightPercent}%</span>
+            <span className="percent-text">
+              {parseFloat(rightPercent.toFixed(2))}%
+            </span>
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <p style={{ color: "purple", fontWeight: "bold" }}>
+          <p
+            style={{ color: "purple", fontWeight: "bold", textAlign: "center" }}
+          >
             全てAIが書いた文章
+            <br />
+            を購入したいと思った
           </p>
-          <p style={{ color: "green", fontWeight: "bold" }}>
+          <p
+            style={{ color: "green", fontWeight: "bold", textAlign: "center" }}
+          >
             {props.taskID == 1
               ? "全て人間が書いた文章"
               : props.taskID == 2
-              ? "人間がAIのサポートを受けて書いた文章"
+              ? "人間がAIの提案を参考にして書いた文章"
               : "AIが書いた文章を人間が修正した文章"}
+            <br />
+            を購入したいと思った
           </p>
         </div>
       </div>

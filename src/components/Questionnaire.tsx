@@ -60,8 +60,10 @@ const Questionnaire: React.FC<Props> = (props) => {
       productID: props.productID,
       selectedItem: props.selectedItem,
       ratings: props.ratings,
+      timestamp: Date.now(),
     });
     props.setPageNumber(props.pageNumber + 1);
+    props.setDisabledNext(false);
   }
   return (
     <div

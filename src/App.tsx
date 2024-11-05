@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { shuffleArray } from "./utils";
 import { v4 as uuidv4 } from "uuid";
 import Questionnaire from "./components/Questionnaire";
-import { ref, set, runTransaction } from "firebase/database";
+import { ref, increment, update, get } from "firebase/database";
 import { firebaseDb } from "./firebase";
 import PR from "./components/PR";
 
@@ -56,24 +56,85 @@ function App() {
     setRandomID(number);
   };
 
-  function setUserIDAndSend() {
-    runTransaction(ref(firebaseDb, `score/${taskID}/${withBadge}`), (post) => {
-      console.log(post);
-      if (post) {
-        console.log(post);
-        if (selectedItem == 4) {
-          post.AICount++;
-        }
-        post.Count++;
-        setScore((post.AICount / post.Count) * 100);
-      } else {
-        console.log("else");
-        set(ref(firebaseDb, `score/${taskID}/${withBadge}`), {
-          AICount: selectedItem == 4 ? 1 : 0,
-          Count: 1,
-        });
+  async function getScore(taskID, withBadge) {
+    try {
+      // 参照パスの指定
+      const aiCountRef = ref(
+        firebaseDb,
+        `score/${String(taskID)}/${String(withBadge)}/AICount`
+      );
+      const countRef = ref(
+        firebaseDb,
+        `score/${String(taskID)}/${String(withBadge)}/Count`
+      );
+
+      // AICountの取得
+      const aiCountSnapshot = await get(aiCountRef);
+      const aiCount = aiCountSnapshot.exists() ? aiCountSnapshot.val() : null;
+
+      // Countの取得
+      const countSnapshot = await get(countRef);
+      const count = countSnapshot.exists() ? countSnapshot.val() : null;
+
+      if (aiCount === null || count === null) {
+        console.log("AICountまたはCountの値が見つかりませんでした");
+        return 50;
       }
-    });
+
+      // スコアの計算
+      const score = (aiCount / count) * 100;
+      console.log(`Score: ${score}`);
+      return score;
+    } catch (error) {
+      console.error("データの取得または計算中にエラーが発生しました:", error);
+      return 50;
+    }
+  }
+
+  useEffect(() => {
+    // 非同期関数を作成して、データをフェッチ
+    const fetchScore = async () => {
+      const result = await getScore(taskID, withBadge);
+      setScore(result); // 結果を setScore にセット
+      console.log(result);
+    };
+
+    fetchScore(); // 非同期関数を呼び出す
+  }, [taskID, withBadge, pageNumber]); // taskID や withBadge が変わったときのみ再度呼び出し
+
+  function setUserIDAndSend() {
+    const updates = {};
+    const dbRef = ref(firebaseDb);
+    if (selectedItem == 4) {
+      updates[`score/${String(taskID)}/${String(withBadge)}/AICount`] =
+        increment(1);
+    }
+    updates[`score/${String(taskID)}/${String(withBadge)}/Count`] =
+      increment(1);
+    update(dbRef, updates);
+    // firebase realtime databaseから、scoreのデータを取得するコードを以下に作成。scoreはscore/${String(taskID)}/${String(withBadge)}/AICount をscore/${String(taskID)}/${String(withBadge)}/Count で割ったもの
+
+    // runTransaction(
+    //   ref(firebaseDb, `score/${String(taskID)}/${String(withBadge)}`),
+    //   (post) => {
+    //     console.log(post);
+    //     if (post) {
+    //       console.log(post);
+    //       if (selectedItem == 4) {
+    //         updates[`score/${String(taskID)}/${String(withBadge)}/AICount`] = increment(1);
+    //         post.AICount++;
+    //       }
+    //       post.Count++;
+    //       setScore((post.AICount / post.Count) * 100);
+    //     } else {
+    //       console.log("else");
+    //       set(ref(firebaseDb, `score/${String(taskID)}/${String(withBadge)}`), {
+    //         AICount: selectedItem == 4 ? 1 : 0,
+    //         Count: 1,
+    //       });
+    //     }
+    //   }
+    // );
   }
 
   const handleClick = () => {

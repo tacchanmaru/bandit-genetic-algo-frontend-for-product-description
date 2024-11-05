@@ -71,7 +71,7 @@ const ProductRating: React.FC<Props> = (props) => {
               </p>
               <Rating
                 name="customized-10"
-                defaultValue={2}
+                defaultValue={0}
                 max={10}
                 onChange={(event, value) => {
                   if (value === null) return;
