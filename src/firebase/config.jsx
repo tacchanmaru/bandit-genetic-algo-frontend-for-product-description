@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyBQstdrS6-i2gRV2htpOyHeeDkPfRMvb2Y",
-  authDomain: "mercari-agora-2024.firebaseapp.com",
-  projectId: "mercari-agora-2024",
-  storageBucket: "mercari-agora-2024.appspot.com",
-  messagingSenderId: "376527592647",
-  appId: "1:376527592647:web:19c0a4ddd7ee058fd932e2",
-  databaseURL: "https://mercari-agora-2024-default-rtdb.firebaseio.com/",
+  apiKey: "AIzaSyCJkj5M588kqqwrAjQ0PovD15xsfvi59c8",
+  authDomain: "mercari-202412.firebaseapp.com",
+  projectId: "mercari-202412",
+  storageBucket: "mercari-202412.firebasestorage.app",
+  messagingSenderId: "163094670285",
+  appId: "1:163094670285:web:2b41ed2bb2aa619b47b284",
+  databaseURL: "https://mercari-202412-default-rtdb.firebaseio.com/",
 };

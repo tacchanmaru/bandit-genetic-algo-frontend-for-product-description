@@ -19,11 +19,9 @@ const PR: React.FC<Props> = (props) => {
       <div
         style={{
           textAlign: "center",
-          position: "fixed",
-          top: "60px",
         }}
       >
-        <div
+        {/* <div
           style={{
             fontSize: "36px",
             fontWeight: "bold",
@@ -32,8 +30,8 @@ const PR: React.FC<Props> = (props) => {
           }}
         >
           実はこのフリマアプリ、未来じゃないんです。
-        </div>
-        <img src="mercari_ai.png" alt="mercari_ai" style={{ width: "70%" }} />
+        </div> */}
+        {/* <img src="mercari_ai.png" alt="mercari_ai" style={{ width: "70%" }} /> */}
         <p
           style={{
             margin: "8px",
@@ -58,8 +56,6 @@ const PR: React.FC<Props> = (props) => {
           }}
           style={{
             margin: "8px",
-            backgroundColor: "#ff333f",
-            color: "white",
           }}
         >
           体験を終了する

@@ -4,7 +4,7 @@ import { formatTextWithLineBreaks } from "../utils";
 
 type Props = {
   productID: number;
-  withBadge: boolean;
+  withLabel: boolean;
   taskID: number;
 };
 
@@ -35,7 +35,7 @@ const PhoneApp: React.FC<Props> = (props) => {
           // border: "2px solid",
           boxShadow: "0 10px 25px 0 rgba(0, 0, 0, .2)",
           width: "430px",
-          height: "600px",
+          // height: "600px",
           margin: "12px 36px",
           backgroundColor: "white",
           borderRadius: "8px",
@@ -108,7 +108,7 @@ const PhoneApp: React.FC<Props> = (props) => {
                     {formatTextWithLineBreaks(text)}
                   </p>
 
-                  {props.withBadge && (
+                  {props.withLabel && (
                     <>
                       <div style={{ height: "48px" }}></div>
                       <div

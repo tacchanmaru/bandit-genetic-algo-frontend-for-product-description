@@ -17,6 +17,9 @@ const Agreement: React.FC<Props> = (props) => {
         maxWidth: "600px",
       }}
     >
+      <h1>
+        フリマアプリの取引において大規模言語モデルの活用が印象的判断に与える影響の研究
+      </h1>
       <p
         style={{
           margin: "8px",
@@ -33,7 +36,7 @@ const Agreement: React.FC<Props> = (props) => {
         <br />
         <b>▽この実験の所要時間</b>
         <br />
-        すべてのタスクを終えるのに個人差はありますが10分程度かかる見込みです。
+        すべてのタスクを終えるのに個人差はありますが3分程度かかる見込みです。
         <br />
         <br />
         <b>▽この実験に参加いただける方</b>
@@ -90,8 +93,8 @@ const Agreement: React.FC<Props> = (props) => {
         }}
         style={{
           margin: "8px",
-          backgroundColor: "#ff333f",
-          color: "white",
+          // backgroundColor: "#ff333f",
+          // color: "white",
         }}
       >
         同意して次に進む

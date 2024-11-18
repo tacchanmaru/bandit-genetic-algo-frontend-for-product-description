@@ -1,47 +1,102 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Radio from "@mui/material/Radio";
 import PhoneApp from "./PhoneApp";
-import Rating from "@mui/material/Rating";
 import { DisplayItemID } from "../App";
-
+import { firebaseDb } from "../firebase";
+import { push, ref } from "firebase/database";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 type Props = {
   pageNumber: number;
   setPageNumber: (pageNumber: number) => void;
   productID: number;
-  displayItemIDLists: DisplayItemID[];
-  setDisplayItemIDLists: (displayItemIDLists: DisplayItemID[]) => void;
-  setDisabledNext: (disabledNext: boolean) => void;
-  withBadge: boolean;
+  // displayItemIDLists: DisplayItemID[];
+  // setDisplayItemIDLists: (displayItemIDLists: DisplayItemID[]) => void;
+  // setDisabledNext: (disabledNext: boolean) => void;
+  withLabel: boolean;
   ratings: { [key: number]: number };
   setRatings: React.Dispatch<React.SetStateAction<{ [key: number]: number }>>;
+  displayItemID: DisplayItemID;
+  userID: string;
 };
 
 const ProductRating: React.FC<Props> = (props) => {
+  const valueList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [selectedValue, setSelectedValue] = useState<number>(0);
+  // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSelectedValue((event.target as HTMLInputElement).value);
+  //   // if (props.setSelectedValue) {
+  //   //   props.setSelectedValue((event.target as HTMLInputElement).value);
+  //   // }
+  // };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function sendDataAndNext() {
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+      props.setPageNumber(props.pageNumber + 1);
+    }, 1500);
+    push(ref(firebaseDb, "results/rating"), {
+      userID: props.userID,
+      productID: props.productID,
+      displayItemID: props.displayItemID.id,
+      value: selectedValue,
+      withLabel: props.withLabel,
+      timestamp: Date.now(),
+    });
+  }
+
+  useEffect(() => {
+    setSelectedValue(props.ratings[props.displayItemID.id] || 0);
+  }, [props.ratings, props.displayItemID.id]);
+
   useEffect(() => {
     // ratingsのstateが更新されるたびに、console.logでratingsの中身を表示
     console.log(props.ratings);
   }, [props.ratings]);
 
-  useEffect(() => {
-    if (Object.keys(props.ratings).length === props.displayItemIDLists.length) {
-      props.setDisabledNext(false);
-    }
-  }, [props, props.ratings]);
+  // useEffect(() => {
+  //   if (selectedValue === 0) {
+  //     props.setDisabledNext(false);
+  //   }
+  // }, [props, props.ratings]);
 
   // RatingのonChangeイベントのハンドラ
   const handleRatingChange = (
-    event: React.SyntheticEvent,
-    value: number,
+    event: React.ChangeEvent<HTMLInputElement>,
     id: number
   ) => {
     console.log(event);
+    setSelectedValue(Number((event.target as HTMLInputElement).value));
     props.setRatings((prevRatings: { [key: number]: number }) => ({
       ...prevRatings,
-      [id]: value,
+      [id]: Number((event.target as HTMLInputElement).value),
     }));
   };
 
   return (
     <>
+      <Dialog fullScreen open={open} onClose={handleClose}>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            回答を登録しました。
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <div
         style={{
           display: "flex",
@@ -49,18 +104,32 @@ const ProductRating: React.FC<Props> = (props) => {
           alignItems: "flex-start",
         }}
       >
-        {props.displayItemIDLists.map((item) => (
-          <div>
-            <PhoneApp
-              productID={props.productID}
-              withBadge={props.withBadge}
-              taskID={item.id}
-            />
+        {/* {props.displayItemIDLists.map((item) => ( */}
+        <div>
+          <PhoneApp
+            productID={props.productID}
+            withLabel={props.withLabel}
+            taskID={props.displayItemID.id}
+          />
+          <div style={{ height: "144px" }} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: "10px",
+              textAlign: "center",
+              width: "460px",
+              margin: "12px 0px",
+              backgroundColor: "white",
+              boxShadow: "0 10px 25px 0 rgba(0, 0, 0, .2)",
+              borderRadius: "8px",
+              padding: "12px",
+            }}
+          >
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
-                margin: "16px 16px",
+                margin: "auto",
                 alignItems: "center",
               }}
             >
@@ -69,23 +138,52 @@ const ProductRating: React.FC<Props> = (props) => {
                 <br />
                 正直でない
               </p>
-              <Rating
-                name="customized-10"
-                defaultValue={0}
-                max={10}
-                onChange={(event, value) => {
-                  if (value === null) return;
-                  handleRatingChange(event, value, item.id);
-                }}
-              />
+              {valueList.map((m, i) => (
+                <Radio
+                  checked={selectedValue === m}
+                  // onChange={handleRadioChange}
+                  onChange={(event) => {
+                    handleRatingChange(event, props.displayItemID.id);
+                  }}
+                  value={m}
+                  id={String(i)}
+                  name="radio-buttons"
+                  inputProps={{ "aria-label": String(m) }}
+                  style={{ padding: "0px" }}
+                />
+              ))}
+              {/* <Rating
+                  name="customized-10"
+                  defaultValue={0}
+                  max={10}
+                  onChange={(event, value) => {
+                    if (value === null) return;
+                    handleRatingChange(event, value, item.id);
+                  }}
+                /> */}
               <p style={{ margin: "0px 8px", textAlign: "center" }}>
                 とても
                 <br />
                 正直である
               </p>
             </div>
+            <Button
+              variant="contained"
+              color="primary"
+              className=""
+              onClick={() => {
+                sendDataAndNext();
+              }}
+              style={{
+                margin: "8px",
+              }}
+              disabled={selectedValue === 0}
+            >
+              回答を送信して次に進む
+            </Button>
           </div>
-        ))}
+        </div>
+        {/* ))} */}
       </div>
     </>
   );

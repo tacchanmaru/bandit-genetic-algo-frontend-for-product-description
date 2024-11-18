@@ -19,7 +19,7 @@ const MyAppBar: React.FC<Props> = (props) => {
             variant="h6"
             style={{ color: "white", fontWeight: "bold" }}
           >
-            AIを使った未来のフリマアプリを体験しよう！
+            実験アプリ
           </Typography>
           <Box sx={{ flexGrow: 0 }}>
             {props.pageNumber !== 0 && (

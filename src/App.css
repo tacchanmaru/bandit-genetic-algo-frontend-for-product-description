@@ -1,3 +1,24 @@
+@media (max-width: 1280px) {
+  .App {
+    display: none;
+  }
+  .App_small {
+    display: block;
+    width: 960px;
+    margin: auto;
+  }
+}
+@media (min-width: 1280px) {
+  .App {
+    /* max-width: fit-content; */
+    /* width:900px; */
+    margin: auto;
+  }
+  .App_small {
+    display: none;
+  }
+}
+
 .App {
   /* max-width: fit-content; */
   width: 100%;
@@ -21,7 +42,7 @@
 h1 {
   font-size: 1.5em;
   font-weight: bold;
-  color: grey;
+  /* color: grey; */
 }
 
 .App_contents {
