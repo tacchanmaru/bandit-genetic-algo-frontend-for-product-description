@@ -98,7 +98,7 @@ function App() {
         if (isHuman) {
           setProductID(accessCount % 39);
         } else {
-          setProductID((accessCount % 41) + 100);
+          setProductID((accessCount % 42) + 101);
         }
         setIsIncremented(true);
       });
@@ -409,21 +409,23 @@ function App() {
       userID={userID}
       withLabel={withLabel}
     />,
-    <div>
-      <p>実験は以上で終了です。</p>
-      <p>
-        以下のパスコードをYahooクラウドソージングに入力した上で、このページを閉じてください。
-      </p>
-      <p>AM5m1WejO9</p>
-      <Button
-        variant="contained"
-        color="primary"
-        className=""
-        onClick={() => window.close()}
-        style={{ margin: "16px 0px" }}
-      >
-        ページを閉じる
-      </Button>
+    <div style={{ width: "100vw", textAlign: "center" }}>
+      <div style={{ maxWidth: "600px", margin: "auto" }}>
+        <p>実験は以上で終了です。</p>
+        <p>
+          以下のパスコードをYahooクラウドソージングに入力した上で、このページを閉じてください。
+        </p>
+        <p>AM5m1WejO9</p>
+        <Button
+          variant="contained"
+          color="primary"
+          className=""
+          onClick={() => window.close()}
+          style={{ margin: "16px 0px" }}
+        >
+          ページを閉じる
+        </Button>
+      </div>
     </div>,
   ];
 
@@ -605,11 +607,13 @@ function App() {
             }
           </div>
         ) : (
-          <div>
-            <p>実験は以上で終了です。</p>
-            <p>
-              本実験はフリマアプリの利用経験のある方を対象とさせていただいております。申し訳ございませんが、条件に合わないため、本実験を終了させていただきます。「ページを閉じる」または、ブラウザの×ボタンを押して、このページを閉じてください。
-            </p>
+          <div style={{ width: "100vw" }}>
+            <div style={{ maxWidth: "600px", margin: "auto" }}>
+              <p>実験は以上で終了です。</p>
+              <p>
+                本実験はフリマアプリの利用経験のある方を対象とさせていただいております。申し訳ございませんが、条件に合わないため、本実験を終了させていただきます。「ページを閉じる」または、ブラウザの×ボタンを押して、このページを閉じてください。
+              </p>
+            </div>
           </div>
         )}
       </div>

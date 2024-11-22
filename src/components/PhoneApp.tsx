@@ -39,7 +39,7 @@ const PhoneApp: React.FC<Props> = (props) => {
           margin: "12px 36px",
           backgroundColor: "white",
           borderRadius: "8px",
-          overflow: "scroll",
+          overflow: "hidden",
         }}
       >
         <div>

@@ -25,7 +25,7 @@ type Props = {
 
 const Questionnaire: React.FC<Props> = (props) => {
   const [gender, setGender] = React.useState("");
-  const [age, setAge] = React.useState("");
+  const [age, setAge] = React.useState<number>();
   const [work, setWork] = React.useState("");
   const inputRef = useRef<HTMLInputElement>();
   const [inputError, setInputError] = useState(false);
@@ -140,12 +140,12 @@ const Questionnaire: React.FC<Props> = (props) => {
           <MenuItem value={"弁護士・税理士・その他士業"}>
             弁護士・税理士・その他士業
           </MenuItem>
-          {/* <MenuItem value={"F"}>教職員</MenuItem> */}
+          <MenuItem value={"教職員"}>教職員</MenuItem>
           <MenuItem value={"個人事業主・自営業"}>個人事業主・自営業</MenuItem>
           <MenuItem value={"契約・派遣社員"}>契約・派遣社員</MenuItem>
           <MenuItem value={"パート・アルバイト"}>パート・アルバイト</MenuItem>
           <MenuItem value={"専業主婦・主夫"}>専業主婦・主夫</MenuItem>
-          {/* <MenuItem value={"K"}>年金受給者</MenuItem> */}
+          <MenuItem value={"年金受給者"}>年金受給者</MenuItem>
           <MenuItem value={"学生"}>学生</MenuItem>
           <MenuItem value={"無職"}>無職</MenuItem>
           <MenuItem value={"その他"}>その他</MenuItem>
@@ -237,7 +237,12 @@ const Questionnaire: React.FC<Props> = (props) => {
         color="primary"
         className=""
         onClick={() => {
-          if (useAppPeriod != "none" && useApp != "なし") {
+          if (
+            useAppPeriod != "none" &&
+            useApp != "なし" &&
+            age != undefined &&
+            age >= 18
+          ) {
             setUserIDAndSend();
             props.setPageNumber(props.pageNumber + 1);
           } else {
@@ -248,7 +253,7 @@ const Questionnaire: React.FC<Props> = (props) => {
         disabled={
           useAppPeriod != "" &&
           useApp != "" &&
-          age != "" &&
+          age != undefined &&
           work != "" &&
           gender != "" &&
           education != "" &&

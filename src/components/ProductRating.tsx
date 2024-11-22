@@ -111,48 +111,62 @@ const ProductRating: React.FC<Props> = (props) => {
             withLabel={props.withLabel}
             taskID={props.displayItemID.id}
           />
-          <div style={{ height: "144px" }} />
+          <div style={{ height: "200px" }} />
+        </div>
+      </div>
+      <div
+        style={{
+          height: "180px",
+          backgroundColor: "white",
+          position: "fixed",
+          bottom: "0",
+          zIndex: 10,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
+        <div
+          style={{
+            position: "fixed",
+            bottom: "100px",
+            textAlign: "center",
+            width: "460px",
+            margin: "12px 0px",
+            backgroundColor: "white",
+            padding: "12px",
+          }}
+        >
           <div
             style={{
-              position: "fixed",
-              bottom: "10px",
-              textAlign: "center",
-              width: "460px",
-              margin: "12px 0px",
-              backgroundColor: "white",
-              boxShadow: "0 10px 25px 0 rgba(0, 0, 0, .2)",
-              borderRadius: "8px",
-              padding: "12px",
+              display: "flex",
+              justifyContent: "center",
+              margin: "auto",
+              alignItems: "center",
+              zIndex: 20,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                margin: "auto",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ margin: "0", textAlign: "center" }}>
-                全く
-                <br />
-                正直でない
-              </p>
-              {valueList.map((m, i) => (
-                <Radio
-                  checked={selectedValue === m}
-                  // onChange={handleRadioChange}
-                  onChange={(event) => {
-                    handleRatingChange(event, props.displayItemID.id);
-                  }}
-                  value={m}
-                  id={String(i)}
-                  name="radio-buttons"
-                  inputProps={{ "aria-label": String(m) }}
-                  style={{ padding: "0px" }}
-                />
-              ))}
-              {/* <Rating
+            <p style={{ margin: "0", textAlign: "center" }}>
+              全く
+              <br />
+              正直でない
+            </p>
+            {valueList.map((m, i) => (
+              <Radio
+                checked={selectedValue === m}
+                // onChange={handleRadioChange}
+                onChange={(event) => {
+                  handleRatingChange(event, props.displayItemID.id);
+                }}
+                value={m}
+                id={String(i)}
+                name="radio-buttons"
+                inputProps={{ "aria-label": String(m) }}
+                style={{ padding: "0px" }}
+              />
+            ))}
+            {/* <Rating
                   name="customized-10"
                   defaultValue={0}
                   max={10}
@@ -161,12 +175,20 @@ const ProductRating: React.FC<Props> = (props) => {
                     handleRatingChange(event, value, item.id);
                   }}
                 /> */}
-              <p style={{ margin: "0px 8px", textAlign: "center" }}>
-                とても
-                <br />
-                正直である
-              </p>
-            </div>
+            <p style={{ margin: "0px 8px", textAlign: "center" }}>
+              とても
+              <br />
+              正直である
+            </p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+            }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -175,7 +197,14 @@ const ProductRating: React.FC<Props> = (props) => {
                 sendDataAndNext();
               }}
               style={{
-                margin: "8px",
+                margin: "auto",
+                padding: "11px 15px",
+                fontSize: "15px",
+                fontWeight: "900",
+                position: "fixed",
+                bottom: "40px",
+                width: "430px",
+                zIndex: 20,
               }}
               disabled={selectedValue === 0}
             >
@@ -183,8 +212,8 @@ const ProductRating: React.FC<Props> = (props) => {
             </Button>
           </div>
         </div>
-        {/* ))} */}
       </div>
+      {/* ))} */}
     </>
   );
 };

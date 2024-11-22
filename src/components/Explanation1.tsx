@@ -11,7 +11,7 @@ const Explanation1: React.FC<Props> = (props) => {
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
       <h1>あなたにしていただきたいこと【重要!】</h1>
-      <p>
+      <p style={{ fontSize: "24px" }}>
         あなたはフリマアプリで<b>商品を購入したい</b>と思っています。
         <b>商品説明文を読んで、購入したい商品を選んでください。</b>
       </p>

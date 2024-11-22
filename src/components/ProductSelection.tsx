@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { shuffleArray } from "../utils";
 
 type Props = {
   pageNumber: number;
@@ -24,6 +25,11 @@ type Props = {
 
 const ProductSelection: React.FC<Props> = (props) => {
   const [open, setOpen] = React.useState(false);
+  const [shuffledDisplayItemIDLists, setShuffledDisplayItemIDLists] =
+    React.useState(props.displayItemIDLists);
+  React.useEffect(() => {
+    setShuffledDisplayItemIDLists(shuffleArray(props.displayItemIDLists));
+  }, [props.displayItemIDLists]);
 
   const handleClose = () => {
     setOpen(false);
@@ -73,14 +79,14 @@ const ProductSelection: React.FC<Props> = (props) => {
           alignItems: "flex-start",
         }}
       >
-        {props.displayItemIDLists.map((item) => (
+        {shuffledDisplayItemIDLists.map((item) => (
           <div>
             <PhoneApp
               productID={props.productID}
               withLabel={props.withLabel}
               taskID={item.id}
             />
-            <div style={{ height: "150px" }} />
+            <div style={{ height: "200px" }} />
             <ToggleButton
               style={{
                 width: "430px",
@@ -94,6 +100,7 @@ const ProductSelection: React.FC<Props> = (props) => {
                 fontWeight: "900",
                 position: "fixed",
                 bottom: "100px",
+                zIndex: 20,
               }}
               value="check"
               selected={props.selectedItem === item.id}
@@ -126,6 +133,16 @@ const ProductSelection: React.FC<Props> = (props) => {
       </div>
       <div
         style={{
+          height: "180px",
+          backgroundColor: "white",
+          position: "fixed",
+          bottom: "0",
+          zIndex: 10,
+          width: "100%",
+        }}
+      />
+      <div
+        style={{
           width: "100%",
           display: "flex",
           justifyContent: "center",
@@ -147,6 +164,7 @@ const ProductSelection: React.FC<Props> = (props) => {
             position: "fixed",
             bottom: "40px",
             width: "932px",
+            zIndex: 20,
           }}
           disabled={props.selectedItem === 0}
         >

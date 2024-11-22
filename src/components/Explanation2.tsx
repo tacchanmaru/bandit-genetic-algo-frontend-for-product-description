@@ -12,13 +12,13 @@ const Explanation2: React.FC<Props> = (props) => {
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
       <h1>アプリの説明【重要!】</h1>
-      <p>
+      <p style={{ fontSize: "24px" }}>
         このアプリでは、出品者が自分で商品説明の文章を書くだけでなく、AIを活用して書くこともできるようになっています。
       </p>
 
       {props.withLabel && (
         <>
-          <p>
+          <p style={{ fontSize: "24px" }}>
             このアプリでは、だれが商品説明の文章を書いたかが、以下の図のように、文章の最後に表示されます。
           </p>
           <img src="label_example.png" alt="label_example" />

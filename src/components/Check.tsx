@@ -103,14 +103,19 @@ const Check: React.FC<Props> = (props) => {
             onChange={handlePurposeChange}
           >
             <FormControlLabel
-              value="1"
+              value="Yes"
               control={<Radio />}
               label="はい、ありました"
             />
             <FormControlLabel
-              value="2"
+              value="No"
               control={<Radio />}
               label="いいえ、ありませんでした"
+            />
+            <FormControlLabel
+              value="I don't know"
+              control={<Radio />}
+              label="忘れました"
             />
           </RadioGroup>
         </FormControl>
@@ -126,14 +131,12 @@ const Check: React.FC<Props> = (props) => {
               props.setPageNumber(props.pageNumber + 1);
             }}
             style={{
-              margin: "auto",
+              margin: "16px auto",
               // backgroundColor: "#ff333f",
               color: "white",
               padding: "11px 15px",
               fontSize: "15px",
               fontWeight: "900",
-              position: "fixed",
-              bottom: "40px",
               width: "932px",
             }}
             disabled={
