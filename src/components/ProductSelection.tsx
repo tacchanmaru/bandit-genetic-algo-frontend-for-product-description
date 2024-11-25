@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import { shuffleArray } from "../utils";
 
 type Props = {
   pageNumber: number;
@@ -25,11 +24,6 @@ type Props = {
 
 const ProductSelection: React.FC<Props> = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [shuffledDisplayItemIDLists, setShuffledDisplayItemIDLists] =
-    React.useState(props.displayItemIDLists);
-  React.useEffect(() => {
-    setShuffledDisplayItemIDLists(shuffleArray(props.displayItemIDLists));
-  }, [props.displayItemIDLists]);
 
   const handleClose = () => {
     setOpen(false);
@@ -79,7 +73,7 @@ const ProductSelection: React.FC<Props> = (props) => {
           alignItems: "flex-start",
         }}
       >
-        {shuffledDisplayItemIDLists.map((item) => (
+        {props.displayItemIDLists.map((item) => (
           <div>
             <PhoneApp
               productID={props.productID}

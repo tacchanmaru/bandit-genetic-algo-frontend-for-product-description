@@ -79,6 +79,7 @@ const Questionnaire: React.FC<Props> = (props) => {
       education: education,
       useApp: useApp,
       useAppPeriod: useAppPeriod,
+      useAIPeriod: useAIPeriod,
       withLabel: props.withLabel,
       randomID: props.randomID,
       productID: props.productID,

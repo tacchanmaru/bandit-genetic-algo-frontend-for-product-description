@@ -29,6 +29,7 @@ function App() {
   const [taskID, setTaskID] = useState(1);
   const [isIncremented, setIsIncremented] = useState(false);
   const [isTarget, setIsTarget] = useState(true);
+  const [ratingList, setRatingList] = useState<number[]>([0, 1]);
 
   // const [disabledNext, setDisabledNext] = useState(true);
   const [withLabel, setWithLabel] = useState(false);
@@ -46,6 +47,10 @@ function App() {
     const number = Math.floor(1000 + Math.random() * 9000); // 4桁の乱数を生成 (1000-9999)
     setRandomID(number);
   };
+
+  useEffect(() => {
+    setRatingList(shuffleArray([0, 1]));
+  }, []);
 
   useEffect(() => {
     console.log("fire");
@@ -82,7 +87,14 @@ function App() {
       let accessCount = 0;
 
       runTransaction(
-        ref(firebaseDb, "/access/" + (isHuman ? "human" : "ai") + "/"),
+        ref(
+          firebaseDb,
+          "/access/" +
+            (isHuman ? "human" : "ai") +
+            "/" +
+            (withLabel ? "withLabel" : "withoutLabel") +
+            "/"
+        ),
         (post) => {
           if (post) {
             post.accessCount++; // postが存在する場合、increment
@@ -103,7 +115,7 @@ function App() {
         setIsIncremented(true);
       });
     }
-  }, [isHuman]); // isHumanが確定したときだけ実行
+  }, [isHuman, withLabel]); // isHumanが確定したときだけ実行
 
   // function setUserIDAndSend() {
   //   const updates = {};
@@ -371,7 +383,7 @@ function App() {
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         productID={productID}
-        displayItemID={displayItemIDLists[0]}
+        displayItemID={displayItemIDLists[ratingList[0]]}
         withLabel={withLabel}
         ratings={ratings}
         setRatings={setRatings}
@@ -392,7 +404,7 @@ function App() {
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         productID={productID}
-        displayItemID={displayItemIDLists[1]}
+        displayItemID={displayItemIDLists[ratingList[1]]}
         withLabel={withLabel}
         ratings={ratings}
         setRatings={setRatings}
@@ -537,7 +549,9 @@ function App() {
   return (
     <>
       <div className="App_small">
-        この実験を行うためには、ブラウザの横幅が1280px以上である必要があります。
+        <p style={{ fontSize: "24px" }}>
+          お使いのブラウザの画面の横幅では、タスクを進めることができません。画面の大きな端末でお試しください。
+        </p>
       </div>
       <div className="App">
         {/* <div>
@@ -609,8 +623,8 @@ function App() {
         ) : (
           <div style={{ width: "100vw" }}>
             <div style={{ maxWidth: "600px", margin: "auto" }}>
-              <p>実験は以上で終了です。</p>
-              <p>
+              <h1>実験は以上で終了です。</h1>
+              <p style={{ fontSize: "24px" }}>
                 本実験はフリマアプリの利用経験のある方を対象とさせていただいております。申し訳ございませんが、条件に合わないため、本実験を終了させていただきます。「ページを閉じる」または、ブラウザの×ボタンを押して、このページを閉じてください。
               </p>
             </div>
