@@ -4,7 +4,6 @@ import "./App.css";
 // import ProductGrid from "./components/ProductGrid";
 import ProductSelection from "./components/ProductSelection";
 import ProductRating from "./components/ProductRating";
-import { Button } from "@mui/material";
 import { shuffleArray } from "./utils";
 import { v4 as uuidv4 } from "uuid";
 import Questionnaire from "./components/Questionnaire";
@@ -422,21 +421,17 @@ function App() {
       withLabel={withLabel}
     />,
     <div style={{ width: "100vw", textAlign: "center" }}>
-      <div style={{ maxWidth: "600px", margin: "auto" }}>
-        <p>実験は以上で終了です。</p>
-        <p>
-          以下のパスコードをYahooクラウドソージングに入力した上で、このページを閉じてください。
+      <div style={{ maxWidth: "600px", margin: "auto", textAlign: "left" }}>
+        <h1>実験は以上で終了です。</h1>
+        <p style={{ fontSize: "24px" }}>
+          以下のパスコードをYahooクラウドソージングに入力してください。
         </p>
-        <p>AM5m1WejO9</p>
-        <Button
-          variant="contained"
-          color="primary"
-          className=""
-          onClick={() => window.close()}
-          style={{ margin: "16px 0px" }}
-        >
-          ページを閉じる
-        </Button>
+        <p style={{ fontSize: "24px" }}>AM5m1WejO9</p>
+        <p style={{ fontSize: "24px", color: "red" }}>
+          【注意】Yahooクラウドソーシングにコードを入力するまで、このページを閉じないでください。
+          <br />
+          一度このページを閉じると、上記のコードは表示できません。
+        </p>
       </div>
     </div>,
   ];
@@ -549,9 +544,11 @@ function App() {
   return (
     <>
       <div className="App_small">
-        <p style={{ fontSize: "24px" }}>
-          お使いのブラウザの画面の横幅では、タスクを進めることができません。画面の大きな端末でお試しください。
-        </p>
+        <div style={{ maxWidth: "600px", margin: "auto", textAlign: "left" }}>
+          <p style={{ fontSize: "24px" }}>
+            お使いのブラウザの画面の横幅では、タスクを進めることができません。画面（解像度）の大きな端末でお試しください。
+          </p>
+        </div>
       </div>
       <div className="App">
         {/* <div>
@@ -622,7 +619,9 @@ function App() {
           </div>
         ) : (
           <div style={{ width: "100vw" }}>
-            <div style={{ maxWidth: "600px", margin: "auto" }}>
+            <div
+              style={{ maxWidth: "600px", margin: "auto", textAlign: "left" }}
+            >
               <h1>実験は以上で終了です。</h1>
               <p style={{ fontSize: "24px" }}>
                 本実験はフリマアプリの利用経験のある方を対象とさせていただいております。申し訳ございませんが、条件に合わないため、本実験を終了させていただきます。「ページを閉じる」または、ブラウザの×ボタンを押して、このページを閉じてください。
