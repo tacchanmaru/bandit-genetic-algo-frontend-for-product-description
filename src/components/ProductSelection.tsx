@@ -1,5 +1,5 @@
-import * as React from "react";
-import { ToggleButton } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { ToggleButton, Tooltip } from "@mui/material";
 import PhoneApp from "./PhoneApp";
 import { DisplayItemID } from "../App";
 import { firebaseDb } from "../firebase";
@@ -12,18 +12,41 @@ import DialogContentText from "@mui/material/DialogContentText";
 type Props = {
   pageNumber: number;
   setPageNumber: (pageNumber: number) => void;
-  productID: number;
   displayItemIDLists: DisplayItemID[];
-  // setDisabledNext: (disabledNext: boolean) => void;
-  withLabel: boolean;
-  selectedItem: number;
-  setSelectedItem: React.Dispatch<React.SetStateAction<number>>;
-  taskID: number;
   userID: string;
 };
 
 const ProductSelection: React.FC<Props> = (props) => {
+  // const [isAtBottom, setIsAtBottom] = useState(false);
+  const [hasReachedBottom, setHasReachedBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // 現在のスクロール位置とページの高さを取得
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // ページの一番下にいるかどうかを判定
+      // setIsAtBottom(scrollTop + windowHeight >= documentHeight);
+      if (scrollTop + windowHeight >= documentHeight) {
+        setHasReachedBottom(true); // 一番下まで到達したらフラグを立てる
+      }
+    };
+
+    // スクロールイベントを監視
+    window.addEventListener("scroll", handleScroll);
+
+    // 初期状態を確認
+    handleScroll();
+
+    // クリーンアップ
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const [open, setOpen] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -43,10 +66,9 @@ const ProductSelection: React.FC<Props> = (props) => {
     }, 1500);
     push(ref(firebaseDb, "results/selection"), {
       userID: props.userID,
-      productID: props.productID,
-      value: props.selectedItem,
-      withLabel: props.withLabel,
+      value: selectedItem,
       timestamp: Date.now(),
+      pair: props.displayItemIDLists.map((item) => item.id),
     });
   }
 
@@ -75,20 +97,15 @@ const ProductSelection: React.FC<Props> = (props) => {
       >
         {props.displayItemIDLists.map((item) => (
           <div>
-            <PhoneApp
-              productID={props.productID}
-              withLabel={props.withLabel}
-              taskID={item.id}
-            />
+            <PhoneApp taskID={item.id} />
             <div style={{ height: "200px" }} />
             <ToggleButton
               style={{
                 width: "430px",
                 margin: "0px 36px",
                 textAlign: "center",
-                backgroundColor:
-                  props.selectedItem === item.id ? "#ff333f" : "white",
-                color: props.selectedItem === item.id ? "white" : "#ff333f",
+                backgroundColor: selectedItem === item.id ? "#ff333f" : "white",
+                color: selectedItem === item.id ? "white" : "#ff333f",
                 padding: "11px 15px",
                 fontSize: "15px",
                 fontWeight: "900",
@@ -97,12 +114,10 @@ const ProductSelection: React.FC<Props> = (props) => {
                 zIndex: 20,
               }}
               value="check"
-              selected={props.selectedItem === item.id}
-              onChange={() => props.setSelectedItem(item.id)}
+              selected={selectedItem === item.id}
+              onChange={() => setSelectedItem(item.id)}
             >
-              {props.selectedItem === item.id
-                ? "選択済み"
-                : "こちらの商品を選ぶ"}
+              {selectedItem === item.id ? "選択済み" : "こちらの商品を選ぶ"}
             </ToggleButton>
             {/* <Button
             style={{
@@ -143,27 +158,45 @@ const ProductSelection: React.FC<Props> = (props) => {
           alignItems: "flex-start",
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          className=""
-          onClick={() => {
-            sendDataAndNext();
-          }}
-          style={{
-            margin: "auto",
-            padding: "11px 15px",
-            fontSize: "15px",
-            fontWeight: "900",
-            position: "fixed",
-            bottom: "40px",
-            width: "932px",
-            zIndex: 20,
-          }}
-          disabled={props.selectedItem === 0}
+        <Tooltip
+          title={
+            !hasReachedBottom
+              ? "一番下までスクロールして、商品説明文を読んでください。"
+              : selectedItem == ""
+              ? "回答を選択してください。"
+              : ""
+          }
         >
-          回答を送信して次に進む
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className=""
+            onClick={() => {
+              if (hasReachedBottom && selectedItem !== "") {
+                sendDataAndNext();
+                window.scrollTo(0, 0);
+              }
+            }}
+            style={{
+              margin: "auto",
+              padding: "11px 15px",
+              fontSize: "15px",
+              fontWeight: "900",
+              position: "fixed",
+              bottom: "40px",
+              width: "932px",
+              zIndex: 20,
+              backgroundColor:
+                selectedItem == "" || !hasReachedBottom ? "#ccc" : "",
+              cursor:
+                selectedItem == "" || !hasReachedBottom
+                  ? "not-allowed"
+                  : "pointer",
+            }}
+          >
+            回答を送信して次に進む
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );

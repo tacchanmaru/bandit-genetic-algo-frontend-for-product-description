@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { products } from "../data/Products";
+import React from "react";
 import { formatTextWithLineBreaks } from "../utils";
 
 type Props = {
-  productID: number;
-  withLabel: boolean;
-  taskID: number;
+  taskID: string;
 };
 
 const PhoneApp: React.FC<Props> = (props) => {
-  const [product, setProduct] = useState(products[0]);
-  const [text, setText] = useState("");
+  // const [product, setProduct] = useState(products[0]);
+  const text = `【商品名】
+シンプル無地トートバッグ
 
-  useEffect(() => {
-    const product = products.find((p) => p.id === props.productID);
-    if (product !== undefined) {
-      setProduct(product);
-      if (props.taskID === 1) {
-        setText(product.text1);
-      } else if (props.taskID === 2) {
-        setText(product.text2);
-      } else if (props.taskID === 3) {
-        setText(product.text3);
-      } else if (props.taskID === 4) {
-        setText(product.text4);
-      }
-    }
-  }, [props.productID, props.taskID]);
+【サイズ】
+約30cm×35cm（持ち手含まず）
+
+【特徴】
+  ・ナチュラルな生成りカラー
+  ・丈夫なキャンバス素材
+  ・エコバッグや普段使いに最適
+
+【状態】
+新品未使用
+
+【注意事項】
+  ・自宅保管のため、気になる方はご遠慮ください
+  ・折りたたんで発送いたします`;
+  const photoURL = "itemPhoto.jpg";
 
   return (
     <>
@@ -54,7 +52,7 @@ const PhoneApp: React.FC<Props> = (props) => {
               }}
             >
               <img
-                src={product.imageUrl}
+                src={photoURL}
                 style={{
                   width: "100%",
                   height: "auto",
@@ -77,7 +75,7 @@ const PhoneApp: React.FC<Props> = (props) => {
                   marginTop: "16px",
                 }}
               >
-                {product.title}
+                シンプル無地トートバッグ
               </p>
               <div>
                 <p
@@ -99,37 +97,14 @@ const PhoneApp: React.FC<Props> = (props) => {
                       fontWeight: "400",
                       color: "#333",
                       fontSize: "15px",
-                      fontFamily:
-                        "Helvetica Neue, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif",
                       padding: 0,
                       marginTop: "16px",
+                      fontFamily: props.taskID,
+                      fontStyle: "normal",
                     }}
                   >
                     {formatTextWithLineBreaks(text)}
                   </p>
-
-                  {props.withLabel && (
-                    <>
-                      <div style={{ height: "48px" }}></div>
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          right: 0,
-                          padding: "8px",
-                          color: "gray",
-                        }}
-                      >
-                        {props.taskID === 1
-                          ? "この文章は人間が書きました"
-                          : props.taskID === 2 || props.taskID === 3
-                          ? "この文章はAIと一緒に書きました"
-                          : props.taskID === 4
-                          ? "この文章はAIによって書かれました"
-                          : ""}
-                      </div>
-                    </>
-                  )}
                 </div>
               </div>
             </div>

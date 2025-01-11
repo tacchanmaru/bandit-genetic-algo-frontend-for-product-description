@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Radio from "@mui/material/Radio";
 import PhoneApp from "./PhoneApp";
 import { DisplayItemID } from "../App";
 import { firebaseDb } from "../firebase";
@@ -8,14 +7,12 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import ValueInput from "./ValueInput";
+import { Tooltip } from "@mui/material";
+
 type Props = {
   pageNumber: number;
   setPageNumber: (pageNumber: number) => void;
-  productID: number;
-  // displayItemIDLists: DisplayItemID[];
-  // setDisplayItemIDLists: (displayItemIDLists: DisplayItemID[]) => void;
-  // setDisabledNext: (disabledNext: boolean) => void;
-  withLabel: boolean;
   ratings: { [key: number]: number };
   setRatings: React.Dispatch<React.SetStateAction<{ [key: number]: number }>>;
   displayItemID: DisplayItemID;
@@ -23,14 +20,36 @@ type Props = {
 };
 
 const ProductRating: React.FC<Props> = (props) => {
-  const valueList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [selectedValue, setSelectedValue] = useState<number>(0);
-  // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSelectedValue((event.target as HTMLInputElement).value);
-  //   // if (props.setSelectedValue) {
-  //   //   props.setSelectedValue((event.target as HTMLInputElement).value);
-  //   // }
-  // };
+  // const [isAtBottom, setIsAtBottom] = useState(false);
+  const [hasReachedBottom, setHasReachedBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // 現在のスクロール位置とページの高さを取得
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // ページの一番下にいるかどうかを判定
+      // setIsAtBottom(scrollTop + windowHeight >= documentHeight);
+      if (scrollTop + windowHeight >= documentHeight) {
+        setHasReachedBottom(true); // 一番下まで到達したらフラグを立てる
+      }
+    };
+
+    // スクロールイベントを監視
+    window.addEventListener("scroll", handleScroll);
+
+    // 初期状態を確認
+    handleScroll();
+
+    // クリーンアップ
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -45,10 +64,8 @@ const ProductRating: React.FC<Props> = (props) => {
     }, 1500);
     push(ref(firebaseDb, "results/rating"), {
       userID: props.userID,
-      productID: props.productID,
       displayItemID: props.displayItemID.id,
       value: selectedValue,
-      withLabel: props.withLabel,
       timestamp: Date.now(),
     });
   }
@@ -57,10 +74,10 @@ const ProductRating: React.FC<Props> = (props) => {
     setSelectedValue(props.ratings[props.displayItemID.id] || 0);
   }, [props.ratings, props.displayItemID.id]);
 
-  useEffect(() => {
-    // ratingsのstateが更新されるたびに、console.logでratingsの中身を表示
-    console.log(props.ratings);
-  }, [props.ratings]);
+  // useEffect(() => {
+  //   // ratingsのstateが更新されるたびに、console.logでratingsの中身を表示
+  //   console.log(props.ratings);
+  // }, [props.ratings]);
 
   // useEffect(() => {
   //   if (selectedValue === 0) {
@@ -69,17 +86,17 @@ const ProductRating: React.FC<Props> = (props) => {
   // }, [props, props.ratings]);
 
   // RatingのonChangeイベントのハンドラ
-  const handleRatingChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    console.log(event);
-    setSelectedValue(Number((event.target as HTMLInputElement).value));
-    props.setRatings((prevRatings: { [key: number]: number }) => ({
-      ...prevRatings,
-      [id]: Number((event.target as HTMLInputElement).value),
-    }));
-  };
+  // const handleRatingChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  //   id: string
+  // ) => {
+  //   console.log(event);
+  //   setSelectedValue(Number((event.target as HTMLInputElement).value));
+  //   props.setRatings((prevRatings: { [key: number]: number }) => ({
+  //     ...prevRatings,
+  //     [id]: Number((event.target as HTMLInputElement).value),
+  //   }));
+  // };
 
   return (
     <>
@@ -106,11 +123,7 @@ const ProductRating: React.FC<Props> = (props) => {
       >
         {/* {props.displayItemIDLists.map((item) => ( */}
         <div>
-          <PhoneApp
-            productID={props.productID}
-            withLabel={props.withLabel}
-            taskID={props.displayItemID.id}
-          />
+          <PhoneApp taskID={props.displayItemID.id} />
           <div style={{ height: "200px" }} />
         </div>
       </div>
@@ -138,49 +151,12 @@ const ProductRating: React.FC<Props> = (props) => {
             padding: "12px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "auto",
-              alignItems: "center",
-              zIndex: 20,
-            }}
-          >
-            <p style={{ margin: "0", textAlign: "center" }}>
-              全く
-              <br />
-              正直でない
-            </p>
-            {valueList.map((m, i) => (
-              <Radio
-                checked={selectedValue === m}
-                // onChange={handleRadioChange}
-                onChange={(event) => {
-                  handleRatingChange(event, props.displayItemID.id);
-                }}
-                value={m}
-                id={String(i)}
-                name="radio-buttons"
-                inputProps={{ "aria-label": String(m) }}
-                style={{ padding: "0px" }}
-              />
-            ))}
-            {/* <Rating
-                  name="customized-10"
-                  defaultValue={0}
-                  max={10}
-                  onChange={(event, value) => {
-                    if (value === null) return;
-                    handleRatingChange(event, value, item.id);
-                  }}
-                /> */}
-            <p style={{ margin: "0px 8px", textAlign: "center" }}>
-              とても
-              <br />
-              正直である
-            </p>
-          </div>
+          <ValueInput
+            selectedValue={selectedValue}
+            setSelectedValue={setSelectedValue}
+            displayItemID={props.displayItemID}
+            setRatings={props.setRatings}
+          />
           <div
             style={{
               width: "100%",
@@ -189,27 +165,45 @@ const ProductRating: React.FC<Props> = (props) => {
               alignItems: "flex-start",
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              className=""
-              onClick={() => {
-                sendDataAndNext();
-              }}
-              style={{
-                margin: "auto",
-                padding: "11px 15px",
-                fontSize: "15px",
-                fontWeight: "900",
-                position: "fixed",
-                bottom: "40px",
-                width: "430px",
-                zIndex: 20,
-              }}
-              disabled={selectedValue === 0}
+            <Tooltip
+              title={
+                !hasReachedBottom
+                  ? "一番下までスクロールして、商品説明文を読んでください。"
+                  : selectedValue == 0
+                  ? "回答を選択してください。"
+                  : ""
+              }
             >
-              回答を送信して次に進む
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className=""
+                onClick={() => {
+                  if (hasReachedBottom && selectedValue !== 0) {
+                    sendDataAndNext();
+                    window.scrollTo(0, 0);
+                  }
+                }}
+                style={{
+                  margin: "auto",
+                  padding: "11px 15px",
+                  fontSize: "15px",
+                  fontWeight: "900",
+                  position: "fixed",
+                  bottom: "40px",
+                  width: "430px",
+                  zIndex: 20,
+                  backgroundColor:
+                    selectedValue === 0 || !hasReachedBottom ? "#ccc" : "",
+                  cursor:
+                    selectedValue === 0 || !hasReachedBottom
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                回答を送信して次に進む
+              </Button>
+            </Tooltip>
           </div>
         </div>
       </div>

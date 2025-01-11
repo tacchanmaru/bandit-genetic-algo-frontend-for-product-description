@@ -15,10 +15,7 @@ type Props = {
   pageNumber: number;
   userID: string;
   // setDisabledNext: (disabledNext: boolean) => void;
-  withLabel: boolean;
   randomID: number;
-  productID: number;
-  selectedItem: number;
   ratings: { [key: number]: number };
   setIsTarget: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -26,7 +23,6 @@ type Props = {
 const Questionnaire: React.FC<Props> = (props) => {
   const [gender, setGender] = React.useState("");
   const [age, setAge] = React.useState<number>();
-  const [work, setWork] = React.useState("");
   const inputRef = useRef<HTMLInputElement>();
   const [inputError, setInputError] = useState(false);
 
@@ -34,14 +30,15 @@ const Questionnaire: React.FC<Props> = (props) => {
     setGender(event.target.value as string);
   };
 
-  const handleChangeWork = (event: SelectChangeEvent) => {
-    setWork(event.target.value as string);
-  };
+  // const [work, setWork] = React.useState("");
+  // const handleChangeWork = (event: SelectChangeEvent) => {
+  //   setWork(event.target.value as string);
+  // };
 
-  const [education, setEducation] = React.useState("");
-  const handleChangeEducation = (event: SelectChangeEvent) => {
-    setEducation(event.target.value as string);
-  };
+  // const [education, setEducation] = React.useState("");
+  // const handleChangeEducation = (event: SelectChangeEvent) => {
+  //   setEducation(event.target.value as string);
+  // };
 
   const [useApp, setUseApp] = React.useState("");
   const handleChangeUseApp = (event: SelectChangeEvent) => {
@@ -53,10 +50,10 @@ const Questionnaire: React.FC<Props> = (props) => {
     setUseAppPeriod(event.target.value as string);
   };
 
-  const [useAIPeriod, setUseAIPeriod] = React.useState("");
-  const handleChangeUseAIPeriod = (event: SelectChangeEvent) => {
-    setUseAIPeriod(event.target.value as string);
-  };
+  // const [useAIPeriod, setUseAIPeriod] = React.useState("");
+  // const handleChangeUseAIPeriod = (event: SelectChangeEvent) => {
+  //   setUseAIPeriod(event.target.value as string);
+  // };
 
   const handleChangeAge = (e) => {
     if (inputRef.current) {
@@ -75,14 +72,12 @@ const Questionnaire: React.FC<Props> = (props) => {
       userID: props.userID,
       age: age,
       gender: gender,
-      work: work,
-      education: education,
+      // work: work,
+      // education: education,
       useApp: useApp,
       useAppPeriod: useAppPeriod,
-      useAIPeriod: useAIPeriod,
-      withLabel: props.withLabel,
+      // useAIPeriod: useAIPeriod,
       randomID: props.randomID,
-      productID: props.productID,
       timestamp: Date.now(),
     });
     props.setPageNumber(props.pageNumber + 1);
@@ -125,7 +120,7 @@ const Questionnaire: React.FC<Props> = (props) => {
           <MenuItem value={"others"}>どちらでもない / 回答しない</MenuItem>
         </Select>
       </FormControl>
-      <FormControl fullWidth style={{ margin: "1em 0px" }}>
+      {/* <FormControl fullWidth style={{ margin: "1em 0px" }}>
         <InputLabel id="demo-simple-select-label">職業</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -168,7 +163,7 @@ const Questionnaire: React.FC<Props> = (props) => {
           <MenuItem value={"大学院卒"}>大学院卒（在学中も含む）</MenuItem>
           <MenuItem value={"その他"}>その他</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
       <FormControl fullWidth style={{ margin: "1em 0px" }}>
         <InputLabel id="demo-simple-select-label">
           フリマアプリの利用有無
@@ -207,7 +202,7 @@ const Questionnaire: React.FC<Props> = (props) => {
           <MenuItem value={"3年以上"}>3年以上</MenuItem>
         </Select>
       </FormControl>
-      <FormControl fullWidth style={{ margin: "1em 0px" }}>
+      {/* <FormControl fullWidth style={{ margin: "1em 0px" }}>
         <InputLabel id="demo-simple-select-label">
           文章を生成するAI（ChatGPTやGeminiなど）の利用頻度
         </InputLabel>
@@ -232,7 +227,7 @@ const Questionnaire: React.FC<Props> = (props) => {
           </MenuItem>
           <MenuItem value={"使ったことがない。"}>使ったことがない。</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
       <Button
         variant="contained"
         color="primary"
@@ -255,11 +250,11 @@ const Questionnaire: React.FC<Props> = (props) => {
           useAppPeriod != "" &&
           useApp != "" &&
           age != undefined &&
-          work != "" &&
-          gender != "" &&
-          education != "" &&
-          useAIPeriod != ""
-            ? false
+          // work != "" &&
+          gender != ""
+            ? // education != "" &&
+              // useAIPeriod != ""
+              false
             : true
         }
         style={{

@@ -7,12 +7,11 @@ type Props = {
   pageNumber: number;
 };
 
-const Explanation1: React.FC<Props> = (props) => {
+const Explanation3: React.FC<Props> = (props) => {
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
-      <h1>実験について</h1>
       <p style={{ fontSize: "24px" }}>
-        この実験は、パートA（28問）とパートB（8問）の2つのパートから構成されています。
+        以上でパートAの28問は終了です。次はパートBに回答していただきます。
       </p>
 
       <div style={{ textAlign: "right" }}>
@@ -32,4 +31,4 @@ const Explanation1: React.FC<Props> = (props) => {
   );
 };
 
-export default Explanation1;
+export default Explanation3;
