@@ -22,7 +22,7 @@ export interface DisplayItemID {
 
 function App() {
   const [userID, setUserID] = useState<string>("");
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(5);
   const [ratings, setRatings] = useState({});
   const [isTarget, setIsTarget] = useState(true);
 

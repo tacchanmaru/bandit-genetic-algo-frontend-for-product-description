@@ -99,8 +99,6 @@ const PhoneApp: React.FC<Props> = (props) => {
                       fontSize: "15px",
                       padding: 0,
                       marginTop: "16px",
-                      fontFamily: props.taskID,
-                      fontStyle: "normal",
                     }}
                   >
                     {formatTextWithLineBreaks(text)}
